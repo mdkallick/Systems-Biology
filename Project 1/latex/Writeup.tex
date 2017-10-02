@@ -1,0 +1,153 @@
+\documentclass[]{article}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%opening
+\title{Systems Biology Project 1}
+\author{Mathias D. Kallick}
+
+\begin{document}
+
+\maketitle
+
+\section{Units and Degradation}
+\begin{enumerate}
+	\item Demonstrate that 
+	\begin{equation} \label{eq:1}
+	P1(t) = e^{-d1 \cdot t} \cdot P1_0
+	\end{equation}
+	is the solution to
+	\begin{equation} \label{eq:2}
+	\frac{dP1(t)}{dt} = -d1 \cdot P1(t) 
+	\end{equation}
+	by differentiating both sides of \ref{eq:1}.
+	\begin{center}
+	\begin{tabular}{ l c l }
+	$P1(t)$ & $=$ & $e^{-d1 \cdot t} \cdot P1_0$ \\
+	$\frac{dP1(t)}{dt}$ & $=$ & $\frac{d e^{-d1 \cdot t} \cdot P1_0}{dt}$ \\
+	$\frac{dP1(t)}{dt}$ & $=$ & $-d1 \cdot e^{-d1 \cdot t} \cdot P1_0$ \\
+	$\frac{dP1(t)}{dt}$ & $=$ & $-d1 \cdot P1(t)$ 
+	\end{tabular}
+	\end{center}
+	As we can see, \ref{eq:1} is a solution to \ref{eq:2}. \\
+	\item What units must $d1$ have? \\
+		$d1$ must be in units of $\frac{1}{time}$, so that \ref{eq:1} is in units of concentration (which it gets from $P1_0$), and \ref{eq:2} is in units of concentration over time. \\
+	\item The half-life of a protein is the amount of time it takes for the concentration to halve. What is the half-life of protein P1 (in terms of d1)? Show your work.
+		\begin{center}
+		\begin{tabular}{ l c l }
+			$P1(t)$ & $=$ & $e^{-d1 \cdot t} \cdot P1_0$. \\
+		\end{tabular}
+		\end{center}
+	We want $P1$ to be equal to $\frac{P1_0}{2}$, so lets set $P1(t_f)$ equal to that:
+		\begin{center}
+		\begin{tabular}{ l c l c l}
+			$P1(t_f)$ & $=$ & $\frac{P1_0}{2}$ & $=$ & $e^{-d1 \cdot t_f} \cdot P1_0$. \\
+		\end{tabular}
+		\end{center}
+	It should then be pretty clear that we then want $e^{-d1 \cdot t_f}$ to be equal to $\frac{1}{2}$:
+		\begin{center}
+		\begin{tabular}{ l c l}
+			 $e^{-d1 \cdot t_f}$ & $=$ & $\frac{1}{2}$ \\
+			 $-d1 \cdot t_f$ & $=$ & $\ln(\frac{1}{2})$ \\
+			 $t_f$ & $=$ & $\frac{\ln(\frac{1}{2})}{-d1}$ \\
+			 $t_f$ & $=$ & $\frac{\ln(2)}{d1}$ \\
+		\end{tabular}
+		\end{center}
+	Since we have $t_i = 0$, the half-life is just going to be equal to $t_f$, so we have a half-life of $d1 \cdot \ln(2)$.
+\end{enumerate}
+
+\section{Dimerization}
+\begin{enumerate}
+	\item Write down the set of ODEs that describe the dynamics of this system.
+	\begin{center}
+		\begin{tabular}{ l c l}
+			$\frac{dP1}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2$ \\
+			$\frac{dP2}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2$ \\
+			$\frac{dP1P2}{dt}$ & $=$ & $k1 \cdot P1 \cdot P2 - k2 \cdot P1P2$ \\
+		\end{tabular}
+	\end{center}
+	\item Plot of results:
+		\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization (normal)"}.png}
+		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters: $k1 = 1$, $k2 = 2$}
+		\label{fig:dimer1}
+		\end{figure}
+	
+	\item Steady-state is achieved when the rates are at zero. What is the steady state for this system? Explain the relationships between the steady-states of P1, P2, and P1P2. Why are they in such a relationship? (i.e. relate the parameters to the steady-states) \\ \\
+	The steady state for this system is at $P1 = 2.37$, $P2 = 1.37$, and $P1P2 = 1.62$. This occurs because the balance between concentrations of the three molecules is such that the amount of $P1P2$ (with coefficient $k1$) that is made each time step is equal to the amount of $P1P2$ that is consumed in the creation of $P1$ and $P2$ (with coefficient $k2$). \\
+	\item Plot of results with new parameters ($P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$, $k1 = 1$, $k2 = 1$):
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization (new params)"}.png}
+		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters: $k1 = 1$, $k2 = 1$}
+		\label{fig:dimer2}
+	\end{figure}
+	\item The rate constants for binding and unbinding are identical. But this does not mean that the system begins in steady-state. Why not? \\ \\
+	The system does not begin in a steady state because the concentrations are not balanced such that $P1 \cdot P2 = P1P2$ (that equation only holds for $k1=k2$). Since the dimerization and de-dimerization rates depend on both the rate constants and the concentrations, this system needs some time to get into steady state. \\
+	\item  Explain what has changed in the relationship between the steady-states of the molecular concentrations. Why have those changes occurred? \\ \\
+	The change that happened when changing the parameters is the difference between the relative concentrations required to achieve steady state. In this case, because the dimerization and de-dimerization parameters are equal, that means that the product of the concentrations of $P1$ and $P2$ needs to be equal to the concentration of $P1P2$. This is why the concentrations of $P1$ and $P2$ are lower than in Figure \ref{fig:dimer1}, whereas the concentration of $P1P2$ is higher.
+	
+\end{enumerate}
+\pagebreak
+\section{Dimerization with Degradation}
+\begin{enumerate}
+	\item Write down the set of ODEs that describe the dynamics of this system.
+	\begin{center}
+		\begin{tabular}{ l c l}
+			$\frac{dP1}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2 - d1 \cdot P1$ \\
+			$\frac{dP2}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2 - d2 \cdot P2$ \\
+			$\frac{dP1P2}{dt}$ & $=$ & $k1 \cdot P1 \cdot P2 - k2 \cdot P1P2 - d3 \cdot P1P2$ \\
+		\end{tabular}
+	\end{center}
+	\item Plot of results:
+		\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
+		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = 2$, $d1 = 1$, $d2 = 1$, $d3 = 1$.}
+		\label{fig:dimer_w_deg1}
+		\end{figure}
+	\item  Describe the interesting features of the data. For example, is there a steady state? If so, what is it and why did the system approach it? Are there any peaks? If so, why are they there? \\ \\
+	There is a steady state where the concentrations of all the molecules are all zero. This happened because all of the molecules in the system degrade over time, and the creation rates of each molecule is dependent on the concentrations of the other molecules. Thus, over time, they all decrease (fairly quickly), until there are none of them left. \\
+	\item Find a set of parameter values (all $≥ 10^{−12}$) for which the dimer’s apparent steady-state concentration is higher than the steady-states of P1 and P2. What intuition did you use to find these values? \\ \\
+	I used the parameters $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$, with the same initial conditions as before. The intuition I used was that I wanted the dimer to be produced at a far greater rate than it underwent de-dimerization. Thus, $k2 << k1$. I had all the molecules degrade at the same rate, but reduced that rate so that the steady state could be seen more easily. See the plot in Figure \ref{fig:dimer_w_deg2}.
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (new params)"}.png}
+		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$.}
+		\label{fig:dimer_w_deg2}
+	\end{figure}
+	
+\end{enumerate}
+
+\section{Comparison of MatLab and Python}
+For this project, I decided to write the code in python, utilizing SciPy's ode.integrate function. I thought it would be a good idea to compare the results that I got from Python to those I got from MatLab. This section will just be one-to-one comparisons of the plots. They are all very similar.
+\begin{figure}
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization (normal)"}.png}
+		\caption{Python}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization (matlab)"}.png}
+		\caption{MatLab}
+	\end{subfigure}
+	\caption{Dimerization}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
+		\caption{Python}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (matlab)"}.png}
+		\caption{MatLab}
+	\end{subfigure}
+	\caption{Dimerization with Degradation}
+\end{figure}
+
+\end{document}
