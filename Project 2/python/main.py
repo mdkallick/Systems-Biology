@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from odes import activator_cascade
+from odes import feed_forward
 from ode_integrations import ode15s
 
 """
@@ -35,7 +36,7 @@ for i in range(1,2):
 
     t, sol = ode15s(activator_cascade, yinit, t0, dt, tf, params, inputs=X_star)
 
-    plt.plot(t, X_star, 'b', label='X')
+    plt.plot(t, X_star, 'b', label='X*')
     plt.plot(t, sol[:, 0], 'g', label='Y')
     plt.plot(t, sol[:, 1], 'm', label='Z')
     plt.legend(loc='best')
@@ -56,11 +57,13 @@ ky =  .5 # (in units of nM)
 ny = 2
 dy = .1
 vz_max = 1 # (in units of nM^-1s^-1)
-kz = .5 # (in units of nM)
-nz = 2
+kzx = .5 # (in units of nM)
+nzx = 2
+kzy = .5 # (in units of nM)
+nzy = 2
 dz = .1
 
-params = [vy_max, ky, ny, dy, vz_max, kz, nz, dz]
+params = [vy_max, ky, ny, dy, vz_max, kzx, nzx, kzy, nzy, dz]
 
 #initial conditions
 Y0 = 0
@@ -78,12 +81,12 @@ for i in range(1,2):
 
     t, sol = ode15s(feed_forward, yinit, t0, dt, tf, params, inputs=X_star)
 
-    plt.plot(t, X_star, 'b', label='X')
+    plt.plot(t, X_star, 'b', label='X*')
     plt.plot(t, sol[:, 0], 'g', label='Y')
     plt.plot(t, sol[:, 1], 'm', label='Z')
     plt.legend(loc='best')
     plt.xlabel('time (s)')
     plt.ylabel('concentrations (nM)')
-    plt.title('Activator Cascade')
+    plt.title('Feed-Forward Loop')
     plt.grid()
     plt.show()
