@@ -14,15 +14,12 @@ def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
 	if(inputs is not None):
 		params = np.repeat(params, inputs.shape[1], axis=0).T
 		params = np.concatenate([params, inputs],axis=0)
+		r = set_ode15s(function, yinit, t0, params[:,0])
 
-		r = ode(function).set_f_params(params[:,0]).set_integrator('vode', method='bdf', order=5)
-
-	elif(inputs is None):
-		r = ode(function).set_f_params(params).set_integrator('vode', method='bdf', order=5)
+	if(inputs is None):
+		r = set_ode15s(function, yinit, t0, params)
 
 	t = np.arange(t0, tf+(dt*2), dt)
-
-	r.set_initial_value(yinit, t0)
 
 	sol = np.zeros((t.shape[0], len(yinit)))
 	sol[0] = yinit
@@ -37,6 +34,9 @@ def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
 		while r.successful() and r.t < tf:
 			i+=1
 			sol[i] = r.integrate(r.t+dt)
-			r.set_f_params(params[:,i])
+			r = set_ode15s(function, r.y, r.t, params[:,i])
 
 	return t, sol
+
+def set_ode15s(function, yinit, t0, params):
+	return ode(function).set_f_params(params).set_initial_value(yinit, t0).set_integrator('vode', method='bdf', order=5)
