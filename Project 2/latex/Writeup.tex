@@ -1,0 +1,79 @@
+\documentclass[]{article}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%opening
+\title{Systems Biology Project 2}
+\author{Mathias D. Kallick}
+
+\begin{document}
+
+\maketitle
+
+\section{Activator Cascade}
+
+\section{Feed-Forward Loop}
+
+\section{PER Oscillation}
+\begin{enumerate}
+	\item Write down the set of ODEs that describe the dynamics of this system.
+	\begin{center}
+		\begin{tabular}{ l c l}
+			$\frac{dP1}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2 - d1 \cdot P1$ \\
+			$\frac{dP2}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2 - d2 \cdot P2$ \\
+			$\frac{dP1P2}{dt}$ & $=$ & $k1 \cdot P1 \cdot P2 - k2 \cdot P1P2 - d3 \cdot P1P2$ \\
+		\end{tabular}
+	\end{center}
+	\item Plot of results:
+		\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
+		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = 2$, $d1 = 1$, $d2 = 1$, $d3 = 1$.}
+		\label{fig:dimer_w_deg1}
+		\end{figure}
+	\item  Describe the interesting features of the data. For example, is there a steady state? If so, what is it and why did the system approach it? Are there any peaks? If so, why are they there? \\ \\
+	There is a steady state where the concentrations of all the molecules are all zero. This happened because all of the molecules in the system degrade over time, and the creation rates of each molecule is dependent on the concentrations of the other molecules. Thus, over time, they all decrease (fairly quickly), until there are none of them left. \\
+	\item Find a set of parameter values (all $≥ 10^{−12}$) for which the dimer’s apparent steady-state concentration is higher than the steady-states of P1 and P2. What intuition did you use to find these values? \\ \\
+	I used the parameters $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$, with the same initial conditions as before. The intuition I used was that I wanted the dimer to be produced at a far greater rate than it underwent de-dimerization. Thus, $k2 << k1$. I had all the molecules degrade at the same rate, but reduced that rate so that the steady state could be seen more easily. See the plot in Figure \ref{fig:dimer_w_deg2}.
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (new params)"}.png}
+		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$.}
+		\label{fig:dimer_w_deg2}
+	\end{figure}
+	
+\end{enumerate}
+
+\section{Comparison of MatLab and Python}
+For this project, I decided to write the code in python, utilizing SciPy's ode.integrate function. I thought it would be a good idea to compare the results that I got from Python to those I got from MatLab. This section will just be one-to-one comparisons of the plots. They are all very similar.
+\begin{figure}
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization (normal)"}.png}
+		\caption{Python}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization (matlab)"}.png}
+		\caption{MatLab}
+	\end{subfigure}
+	\caption{Dimerization}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
+		\caption{Python}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (matlab)"}.png}
+		\caption{MatLab}
+	\end{subfigure}
+	\caption{Dimerization with Degradation}
+\end{figure}
+
+\end{document}

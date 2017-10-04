@@ -8,10 +8,10 @@ every timestep.
 TODO: add error checking to make sure that inputs is the right size (given t0, dt, and tf)
 """
 def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
-	inputs = np.array([inputs])
-	params = np.array([params])
 
 	if(inputs is not None):
+		inputs = np.array([inputs])
+		params = np.array([params])
 		params = np.repeat(params, inputs.shape[1], axis=0).T
 		params = np.concatenate([params, inputs],axis=0)
 		r = set_ode15s(function, yinit, t0, params[:,0])
