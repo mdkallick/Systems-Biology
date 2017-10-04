@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from odes import activator_cascade
 from odes import feed_forward
 from odes import neg_feedback
-from ode_integrations import ode15s
+from ode_utils import ode15s
 
 # """
 # Activator Cascade
