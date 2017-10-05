@@ -40,3 +40,6 @@ def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
 
 def set_ode15s(function, yinit, t0, params):
 	return ode(function).set_f_params(params).set_initial_value(yinit, t0).set_integrator('vode', method='bdf', order=5)
+
+def hill( X, K, n ):
+	return (math.pow(K,n)/(math.pow(K,n) + math.pow(X,n)))
