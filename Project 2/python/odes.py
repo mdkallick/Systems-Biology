@@ -1,4 +1,3 @@
-import math
 from ode_utils import hill
 
 def activator_cascade( t, y, params ):
@@ -87,9 +86,9 @@ def neg_feedback( t, y, params ):
 
     # dydt = M, P0, P1, P2, PN
     dydt[0] = (vs*hill(PN, ki, n)) - (vm*hill(km, M, 1))
-    dydt[1] = ks*M - (v1*hill(k1, P0, 1)) + (v2*hill(k2, P1, 1))
+    dydt[1] = (ks*M) - (v1*hill(k1, P0, 1)) + (v2*hill(k2, P1, 1))
     dydt[2] = (v1*hill(k1, P0, 1)) - (v2*hill(k2, P1, 1)) - (v3*hill(k3, P1, 1)) + (v4*hill(k4, P2, 1))
-    dydt[3] = (v3*hill(k3, P1, 1)) - (v4*hill(k4, P2, 1)) - (k1*P2) + (k2*PN) - (vd*hill(kd, P2, 1))
+    dydt[3] = (v3*hill(k3, P1, 1)) - (v4*hill(k4, P2, 1)) - (small_k1*P2) + (small_k2*PN) - (vd*hill(kd, P2, 1))
     dydt[4] = (small_k1*P2) - (small_k2*PN)
 
     return dydt
