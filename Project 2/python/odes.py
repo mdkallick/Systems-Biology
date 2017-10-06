@@ -1,6 +1,8 @@
 from ode_utils import hill
+import math
 
-def activator_cascade( t, y, params ):
+
+def activator_cascade(t, y, params):
     vy_max = params[0]
     ky = params[1]
     ny = params[2]
@@ -16,16 +18,18 @@ def activator_cascade( t, y, params ):
     Y = y[0]
     Z = y[1]
 
-    dydt = [None]*len(y)
+    dydt = [None] * len(y)
 
-    dydt[0] = (vy_max*(math.pow(X_star,ny)))/((math.pow(ky,ny)) +
-                                        (math.pow(X_star,ny))) - dy*Y
-    dydt[1] = (vz_max*(math.pow(Y,nz)))/((math.pow(kz,nz)) +
-                                        (math.pow(Y,nz))) - dz*Z
+    # dydt = Y, Z
+    dydt[0] = vy_max * (math.pow(X_star, ny) / (math.pow(ky, ny) +
+                                                math.pow(X_star, ny))) - dy * Y
+    dydt[1] = vz_max * (math.pow(Y, nz) / (math.pow(kz, nz) +
+                                           math.pow(Y, nz))) - dz * Z
 
     return dydt
 
-def feed_forward( t, y, params ):
+
+def feed_forward(t, y, params):
     vy_max = params[0]
     ky = params[1]
     ny = params[2]
@@ -43,20 +47,22 @@ def feed_forward( t, y, params ):
     Y = y[0]
     Z = y[1]
 
-    dydt = [None]*len(y)
+    dydt = [None] * len(y)
 
-    dydt[0] = (vy_max*(math.pow(X_star,ny)))/((math.pow(ky,ny)) +
-                                        (math.pow(X_star,ny))) - dy*Y
+    # dydt = Y, Z
+    dydt[0] = (vy_max * (math.pow(X_star, ny))) / ((math.pow(ky, ny)) +
+                                                   (math.pow(X_star, ny))) - dy * Y
     dydt[1] = (vz_max
-            *(((math.pow(X_star,nzx)))/((math.pow(kzx,nzx))
-            + (math.pow(X_star,nzx))))
-            *(((math.pow(Y,nzy)))/((math.pow(kzy,nzy))
-            + (math.pow(Y,nzy))))
-            ) - dz*Z
+               * ((math.pow(X_star, nzx)) / ((math.pow(kzx, nzx))
+                                             + (math.pow(X_star, nzx))))
+               * ((math.pow(Y, nzy)) / ((math.pow(kzy, nzy))
+                                        + (math.pow(Y, nzy))))
+               ) - dz * Z
 
     return dydt
 
-def neg_feedback( t, y, params ):
+
+def neg_feedback(t, y, params):
     n = params[0]
     k1 = params[1]
     k2 = params[2]
@@ -85,10 +91,11 @@ def neg_feedback( t, y, params ):
     dydt = [None] * len(y)
 
     # dydt = M, P0, P1, P2, PN
-    dydt[0] = (vs*hill(PN, ki, n)) - (vm*hill(km, M, 1))
-    dydt[1] = (ks*M) - (v1*hill(k1, P0, 1)) + (v2*hill(k2, P1, 1))
-    dydt[2] = (v1*hill(k1, P0, 1)) - (v2*hill(k2, P1, 1)) - (v3*hill(k3, P1, 1)) + (v4*hill(k4, P2, 1))
-    dydt[3] = (v3*hill(k3, P1, 1)) - (v4*hill(k4, P2, 1)) - (small_k1*P2) + (small_k2*PN) - (vd*hill(kd, P2, 1))
-    dydt[4] = (small_k1*P2) - (small_k2*PN)
+    dydt[0] = (vs * hill(PN, ki, n)) - (vm * hill(km, M, 1))
+    dydt[1] = (ks * M) - (v1 * hill(k1, P0, 1)) + (v2 * hill(k2, P1, 1))
+    dydt[2] = (v1 * hill(k1, P0, 1)) - (v2 * hill(k2, P1, 1)) - (v3 * hill(k3, P1, 1)) + (v4 * hill(k4, P2, 1))
+    dydt[3] = (v3 * hill(k3, P1, 1)) - (v4 * hill(k4, P2, 1)) - (small_k1 * P2) + (small_k2 * PN) - (
+    vd * hill(kd, P2, 1))
+    dydt[4] = (small_k1 * P2) - (small_k2 * PN)
 
     return dydt

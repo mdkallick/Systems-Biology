@@ -2,7 +2,7 @@
 
 \usepackage{graphicx}
 \usepackage{caption}
-\usepackage{subcaption}
+\usepackage{subfig}
 
 %opening
 \title{Systems Biology Project 2}
@@ -13,8 +13,79 @@
 \maketitle
 
 \section{Activator Cascade}
+\begin{enumerate}
+	\item Write down the ODEs that describe the system:
+	\begin{center}
+		\begin{tabular}{ l c l}
+			$\frac{dY}{dt}$ & $=$ & $V_{Ymax} (\frac{X^{*nY}}{K_Y^{nY} + X^{*nY}}) - Y dy$ \\
+			$\frac{dZ}{dt}$ & $=$ & $V_{Zmax} (\frac{Y^{nZ}}{K_Z^{nZ} + Y^{nZ}}) - Z dz$ \\
+		\end{tabular}
+	\end{center}
+	\item Plot of Activator Cascade:
+		\begin{figure}[!htbp]
+			\includegraphics[width=\linewidth]{{"../plots/Activator Cascade"}.png}
+			\caption{Plot of two molecules with an activator $X^*$. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1nM/s, KZ = 0.5 \frac{nM}{s}$, $nZ = 2$, and $d = 0.1$.}
+			\label{fig:activator cascade}
+		\end{figure}
+	\item  Explore the effects of signal strength (i.e. the magnitude of X*) on the profile of Z. When does a stronger signal fail to yield a higher response? Why? \\ \\
+	When we increase the magnitude of X*, the profile of Z does not change, but the ratio of the steady state of Y to Z increases. That is, the steady state of Y increases until it is closer to that of Z. The biggest change happens from $X* = 1$ to $X* = 2$. This is because the value of $X*$ is squared when it is used, which has no effect on $1$ but does affect $2$. Further, that first step is the biggest ratio step (times $4$). See Figure \ref{fig:activator cascade grid} for graphs with values of $X*$ from $1$ to $9$.
+	\begin{figure}[!htbp]
+		\centering
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=1)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=2)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=3)"}.png}
+		}
+		\hspace{0mm}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=4)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=5)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=6)"}.png}
+		}
+		\hspace{0mm}
+		\subfloat[]{   % ???
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=7)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=8)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=40mm]{{"../plots/Activator Cascade (X=9)"}.png}
+		}
+		\caption{Plots of two molecules with an activator $X^*$. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1nM/s, KZ = 0.5 \frac{nM}{s}$, $nZ = 2$, and $d = 0.1$. The value of activated $X^*$ was changed between $1$ and $9$.}
+		\label{fig:activator cascade grid}
+	\end{figure}
+	\item If we increase the Hill coefficient, how does the answer to (4) change? Why? \\ \\
+	Nothing really changes as we increase the Hill coefficient because we always rely on an equation that contains the protein concentration in the numerator and the denominator. \\
+	\item What is the relationship between the response time of Z and the onset of the signal? Numerically determine Z’s response time by estimating its steadystate ZSS and the time it takes for Z to become ZSS/2 (in the original configuration and others if you would like to explore further). \\ \\
+	The response time of Z in the original configuration is 8.0 seconds.
+\end{enumerate}
 
 \section{Feed-Forward Loop}
+\begin{enumerate}
+	\item Write down the ODEs that describe the system:
+	\begin{center}
+		\begin{tabular}{ l c l}
+			$\frac{dY}{dt}$ & $=$ & $V_{Ymax} (\frac{X^{*nY}}{K_Y^{nY} + X^{*nY}}) - Y dy$ \\
+			$\frac{dZ}{dt}$ & $=$ & $V_{Zmax} (\frac{X^{*nY}}{K_Y^{nY} + X^{*nY}}) (\frac{Y^{nZ}}{K_Z^{nZ} + Y^{nZ}}) - Z dz$ \\
+		\end{tabular}
+	\end{center}
+	\item Plot of Activator Cascade:
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Feed-Forward Loop"}.png}
+		\caption{Plot of two molecules with an activator $X^*$, which also feeds forward and activates $Z$. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1 \frac{nM}{s}$, $KZX = 0.5 nM$, $nZX = 2$, $KZY = 0.5 nM$, $nZY = 2$, and $d = 1$.}
+		\label{fig:feed-forward loop}
+	\end{figure}
+
+\end{enumerate}
 
 \section{PER Oscillation}
 \begin{enumerate}
@@ -30,7 +101,7 @@
 		\begin{figure}[!htbp]
 		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
 		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = 2$, $d1 = 1$, $d2 = 1$, $d3 = 1$.}
-		\label{fig:dimer_w_deg1}
+		\label{fig:dimer_w_dedfgg1}
 		\end{figure}
 	\item  Describe the interesting features of the data. For example, is there a steady state? If so, what is it and why did the system approach it? Are there any peaks? If so, why are they there? \\ \\
 	There is a steady state where the concentrations of all the molecules are all zero. This happened because all of the molecules in the system degrade over time, and the creation rates of each molecule is dependent on the concentrations of the other molecules. Thus, over time, they all decrease (fairly quickly), until there are none of them left. \\
@@ -39,7 +110,7 @@
 	\begin{figure}[!htbp]
 		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (new params)"}.png}
 		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$.}
-		\label{fig:dimer_w_deg2}
+		\label{fig:dimer_w_dedfgg2}
 	\end{figure}
 	
 \end{enumerate}
