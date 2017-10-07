@@ -49,9 +49,9 @@ for i in range(1, 2):
 
     # Calculations to do response time:
     z_fin = sol[-1, 1]
-    t_change = t[np.argwhere(X_star>0)[0,0]]
-    t_mid = t[find_nearest(sol[:, 1], z_fin/2.)]
-    print(t_mid-t_change)
+    t_change = t[np.argwhere(X_star > 0)[0, 0]]
+    t_mid = t[find_nearest(sol[:, 1], z_fin / 2.)]
+    print(t_mid - t_change)
 
 """
 Feed-Forward Loop
@@ -78,12 +78,13 @@ Z0 = 0
 yinit = [Y0, Z0]
 
 t0 = 0
-dt = .1
-tf = 150
+dt = .001
+tf = 3.5
 
 # Input variable
 for i in range(1, 2):
-    X_star = np.array([0] * 500 + [i] * 1002).T
+    X_star = np.array([0] * int(.5/dt) + [i] * int(.5/dt) + [0] * int((2.5/dt) + 2)).T #+ [i] * int((2/dt)+2)).T
+    # X_star = np.array([0] * int(.5 / dt) + [i] * int((3 / dt) + 2)).T
 
     t, sol = ode15s(feed_forward, yinit, t0, dt, tf, params, inputs=X_star)
 

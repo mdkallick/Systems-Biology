@@ -50,8 +50,8 @@ def feed_forward(t, y, params):
     dydt = [None] * len(y)
 
     # dydt = Y, Z
-    dydt[0] = (vy_max * (math.pow(X_star, ny))) / ((math.pow(ky, ny)) +
-                                                   (math.pow(X_star, ny))) - dy * Y
+    dydt[0] = ((vy_max * (math.pow(X_star, ny))) / ((math.pow(ky, ny)) +
+                                                   (math.pow(X_star, ny)))) - dy * Y
     dydt[1] = (vz_max
                * ((math.pow(X_star, nzx)) / ((math.pow(kzx, nzx))
                                              + (math.pow(X_star, nzx))))
