@@ -21,7 +21,7 @@
 			$\frac{dZ}{dt}$ & $=$ & $V_{Zmax} (\frac{Y^{nZ}}{K_Z^{nZ} + Y^{nZ}}) - Z dz$ \\
 		\end{tabular}
 	\end{center}
-	\item Plot of Activator Cascade:
+	\item Plot of Activator Cascade: See Figure \ref{fig:activator cascade}
 		\begin{figure}[!htbp]
 			\includegraphics[width=\linewidth]{{"../plots/Activator Cascade"}.png}
 			\caption{Plot of two molecules with an activator $X^*$. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1nM/s, KZ = 0.5 \frac{nM}{s}$, $nZ = 2$, and $d = 0.1$.}
@@ -84,67 +84,80 @@
 		\caption{Plot of two molecules with an activator $X^*$, which also feeds forward and activates $Z$. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1 \frac{nM}{s}$, $KZX = 0.5 nM$, $nZX = 2$, $KZY = 0.5 nM$, $nZY = 2$, and $d = 1$.}
 		\label{fig:feed-forward loop}
 	\end{figure}
+	\item Demonstrate how this feed-forward system is immune to short signals where as the cascade of activators is susceptible to it. Is a feed-forward loop immune to short signals because it delays the signal’s off-to-on transition or on-to-off transition? Or both?
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Feed-Forward Loop (disturbed w-o recovery)"}.png}
+		\caption{Plot of two molecules with an activator $X^*$, which also feeds forward and activates $Z$. In this case, the activator has been cut off after .5 seconds of being on. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1 \frac{nM}{s}$, $KZX = 0.5 nM$, $nZX = 2$, $KZY = 0.5 nM$, $nZY = 2$, and $d = 1$.}
+		\label{fig:feed-forward loop (disturbed w-o recovery)}
+	\end{figure}
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/Feed-Forward Loop (disturbed)"}.png}
+		\caption{Plot of two molecules with an activator $X^*$, which also feeds forward and activates $Z$. In this case, the activator has been cut off after .5 seconds of being on, and then put on again after another .5 seconds. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1 \frac{nM}{s}$, $KZX = 0.5 nM$, $nZX = 2$, $KZY = 0.5 nM$, $nZY = 2$, and $d = 1$.}
+		\label{fig:feed-forward loop (disturbed)}
+	\end{figure}
 
 \end{enumerate}
 
 \section{PER Oscillation}
 \begin{enumerate}
-	\item Write down the set of ODEs that describe the dynamics of this system.
-	\begin{center}
-		\begin{tabular}{ l c l}
-			$\frac{dP1}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2 - d1 \cdot P1$ \\
-			$\frac{dP2}{dt}$ & $=$ & $k2 \cdot P1P2 - k1 \cdot P1 \cdot P2 - d2 \cdot P2$ \\
-			$\frac{dP1P2}{dt}$ & $=$ & $k1 \cdot P1 \cdot P2 - k2 \cdot P1P2 - d3 \cdot P1P2$ \\
-		\end{tabular}
-	\end{center}
-	\item Plot of results:
-		\begin{figure}[!htbp]
-		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
-		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = 2$, $d1 = 1$, $d2 = 1$, $d3 = 1$.}
-		\label{fig:dimer_w_dedfgg1}
-		\end{figure}
-	\item  Describe the interesting features of the data. For example, is there a steady state? If so, what is it and why did the system approach it? Are there any peaks? If so, why are they there? \\ \\
-	There is a steady state where the concentrations of all the molecules are all zero. This happened because all of the molecules in the system degrade over time, and the creation rates of each molecule is dependent on the concentrations of the other molecules. Thus, over time, they all decrease (fairly quickly), until there are none of them left. \\
-	\item Find a set of parameter values (all $≥ 10^{−12}$) for which the dimer’s apparent steady-state concentration is higher than the steady-states of P1 and P2. What intuition did you use to find these values? \\ \\
-	I used the parameters $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$, with the same initial conditions as before. The intuition I used was that I wanted the dimer to be produced at a far greater rate than it underwent de-dimerization. Thus, $k2 << k1$. I had all the molecules degrade at the same rate, but reduced that rate so that the steady state could be seen more easily. See the plot in Figure \ref{fig:dimer_w_deg2}.
+	\item Reproduce Figure 2 from "A model for circadian oscillations in the \textit{Drosophila} period protein (PER)": See Figure \ref{fig:per oscillation}
 	\begin{figure}[!htbp]
-		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (new params)"}.png}
-		\caption{Dimerization of P1 and P2 into P1P2 over a time interval of 10 seconds. Steady state starts around t = 2. Initial conditions: $P1(0) = 2$, $P2(0) = 3$, $P1P1(0) = 1$. Parameters:  $k1 = 1$, $k2 = .1$, $d1 = .1$, $d2 = .1$, $d3 = .1$.}
-		\label{fig:dimer_w_dedfgg2}
+		\includegraphics[width=\linewidth]{{"../plots/PER Oscillations"}.png}
+		\caption{Reproduction of Figure 2 from "A model for circadian oscillations in the \textit{Drosophila} period protein (PER)", by Albert Goldbeter.}
+		\label{fig:per oscillation}
 	\end{figure}
-	
+	\item Varying the PER degradation rate: See Figure \ref{fig:oscillation grid vd}
+	\begin{figure}[!htbp]
+		\centering
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vd=.8)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vd=.85)"}.png}
+		}
+		\hspace{0mm}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vd=.9)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vd=1.0)"}.png}
+		}
+		\hspace{0mm}
+		\subfloat[]{   % ???
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vd=1.05)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vd=1.1)"}.png}
+		}
+		\caption{Plots with standard y-axis showing effect of changing $v_d$ (the PER degradation rate) on PER oscillations. As we can see, lower values of $v_d$ correspond to lower maximum levels of total PER ($PT$), while higher values of $v_d$ correspond to higher maximum levels of total PER. As Goldbeter points out, this is counterintuitive because $v_d$ is the degradation rate of PER, and yet increasing it also increases the maximum value of $PT$.}
+		\label{fig:oscillation grid vd}
+	\end{figure}
+	\item Varying the mRNA degradation rate: See Figure \ref{fig:oscillation grid vm}
+	\begin{figure}[!htbp]
+		\centering
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vm=.5)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vm=.55)"}.png}
+		}
+		\hspace{0mm}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vm=.6)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vm=.7)"}.png}
+		}
+		\hspace{0mm}
+		\subfloat[]{   % ???
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vm=.75)"}.png}
+		}
+		\subfloat{
+			\includegraphics[width=65mm]{{"../plots/PER Oscillations (vm=.8)"}.png}
+		}
+		\caption{Plots with standard y-axis showing effect of changing $v_m$ (the mRNA degradation rate) on mRNA oscillations. As we can see, lower values of $v_m$ correspond to higher maximum levels of total mRNA ($M$), while higher values of $v_m$ correspond to lower maximum levels of total PER. This does not follow the same pattern as varying the PER degradation rate - in fact, it is more intuitive, since higher degradation rate leads to lower maximum mRNA levels.}
+		\label{fig:oscillation grid vm}
+	\end{figure}
 \end{enumerate}
-
-\section{Comparison of MatLab and Python}
-For this project, I decided to write the code in python, utilizing SciPy's ode.integrate function. I thought it would be a good idea to compare the results that I got from Python to those I got from MatLab. This section will just be one-to-one comparisons of the plots. They are all very similar.
-\begin{figure}
-	\centering
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{{"../plots/Dimerization (normal)"}.png}
-		\caption{Python}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{{"../plots/Dimerization (matlab)"}.png}
-		\caption{MatLab}
-	\end{subfigure}
-	\caption{Dimerization}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (normal)"}.png}
-		\caption{Python}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{{"../plots/Dimerization with Degradation (matlab)"}.png}
-		\caption{MatLab}
-	\end{subfigure}
-	\caption{Dimerization with Degradation}
-\end{figure}
 
 \end{document}
