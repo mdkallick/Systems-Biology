@@ -63,10 +63,10 @@
 		\caption{Plots of two molecules with an activator $X^*$. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1nM/s, KZ = 0.5 \frac{nM}{s}$, $nZ = 2$, and $d = 0.1$. The value of activated $X^*$ was changed between $1$ and $9$.}
 		\label{fig:activator cascade grid}
 	\end{figure}
-	\item If we increase the Hill coefficient, how does the answer to (4) change? Why? \\ \\
+	\item If we increase the Hill coefficient, how does the answer to (3) change? Why? \\ \\
 	Nothing really changes as we increase the Hill coefficient because we always rely on an equation that contains the protein concentration in the numerator and the denominator. \\
 	\item What is the relationship between the response time of Z and the onset of the signal? Numerically determine Z’s response time by estimating its steadystate ZSS and the time it takes for Z to become ZSS/2 (in the original configuration and others if you would like to explore further). \\ \\
-	The response time of Z in the original configuration is 8.0 seconds.
+	The response time of Z in the original configuration is 8.01 seconds. If we increase the value of $X*$, the response time decreases (response time = 7.84 s for $X* = 2$, 7.81 for $X=3$, etc).
 \end{enumerate}
 
 \section{Feed-Forward Loop}
@@ -95,6 +95,7 @@
 		\caption{Plot of two molecules with an activator $X^*$, which also feeds forward and activates $Z$. In this case, the activator has been cut off after .5 seconds of being on, and then put on again after another .5 seconds. Parameters: $vYmax = 1 \frac{nM}{s}$, $KY = 0.5 nM$, $nY = 2$, $vZmax = 1 \frac{nM}{s}$, $KZX = 0.5 nM$, $nZX = 2$, $KZY = 0.5 nM$, $nZY = 2$, and $d = 1$.}
 		\label{fig:feed-forward loop (disturbed)}
 	\end{figure}
+	As we can see from Figure \ref{fig:feed-forward loop (disturbed w-o recovery)}, when we cut the signal from $X*$, the resulting decrease in concentrations is very slight, with only a small downwards slope. Meanwhile, as we can see in Figure \ref{fig:feed-forward loop (disturbed)}, if we reintroduce the signal after it has been cut, the signal resumes increasing at a decent rate. Yes, $Z$ is slightly behind $Y$ in it's increase, but both are still increasing from the start.
 
 \end{enumerate}
 
@@ -106,7 +107,7 @@
 		\caption{Reproduction of Figure 2 from "A model for circadian oscillations in the \textit{Drosophila} period protein (PER)", by Albert Goldbeter.}
 		\label{fig:per oscillation}
 	\end{figure}
-	\item Varying the PER degradation rate: See Figure \ref{fig:oscillation grid vd}
+	\item Varying the PER degradation rate: See Figure \ref{fig:oscillation grid vd}. As we can see, the maximal level of PER is proportional to the value of PER degradation, which is counter-intuitive, because one would expect a higher amount of degradation to correspond to less PER.
 	\begin{figure}[!htbp]
 		\centering
 		\subfloat{
@@ -132,7 +133,7 @@
 		\caption{Plots with standard y-axis showing effect of changing $v_d$ (the PER degradation rate) on PER oscillations. As we can see, lower values of $v_d$ correspond to lower maximum levels of total PER ($PT$), while higher values of $v_d$ correspond to higher maximum levels of total PER. As Goldbeter points out, this is counterintuitive because $v_d$ is the degradation rate of PER, and yet increasing it also increases the maximum value of $PT$.}
 		\label{fig:oscillation grid vd}
 	\end{figure}
-	\item Varying the mRNA degradation rate: See Figure \ref{fig:oscillation grid vm}
+	\item Varying the mRNA degradation rate: See Figure \ref{fig:oscillation grid vm}. As we can see, the maximal level of mRNA is inversely proportional to the value of mRNA degradation, which should be intuitive to the reader.
 	\begin{figure}[!htbp]
 		\centering
 		\subfloat{

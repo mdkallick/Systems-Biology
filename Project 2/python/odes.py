@@ -20,11 +20,9 @@ def activator_cascade(t, y, params):
 
     dydt = [None] * len(y)
 
-    # dydt = Y, Z
-    dydt[0] = vy_max * (math.pow(X_star, ny) / (math.pow(ky, ny) +
-                                                math.pow(X_star, ny))) - dy * Y
-    dydt[1] = vz_max * (math.pow(Y, nz) / (math.pow(kz, nz) +
-                                           math.pow(Y, nz))) - dz * Z
+    # dydt = [Y, Z]
+    dydt[0] = (vy_max * (math.pow(X_star, ny) / (math.pow(ky, ny) + math.pow(X_star, ny)))) - (dy * Y)
+    dydt[1] = (vz_max * (math.pow(Y, nz) / (math.pow(kz, nz) + math.pow(Y, nz)))) - (dz * Z)
 
     return dydt
 

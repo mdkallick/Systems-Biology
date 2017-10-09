@@ -28,12 +28,12 @@ Z0 = 0
 yinit = [Y0, Z0]
 
 t0 = 0
-dt = .1
+dt = .01
 tf = 150
 
 # Input variable
-for i in range(1, 2):
-    X_star = np.array([0] * 500 + [i] * 1002).T
+for i in range(1, 5):
+    X_star = np.array([0] * 5000 + [i] * 10002).T
 
     t, sol = ode15s(activator_cascade, yinit, t0, dt, tf, params, inputs=X_star)
 
@@ -48,7 +48,7 @@ for i in range(1, 2):
     plt.show()
 
     # Calculations to do response time:
-    z_fin = sol[-1, 1]
+    z_fin = sol[-3, 1]
     t_change = t[np.argwhere(X_star > 0)[0, 0]]
     t_mid = t[find_nearest(sol[:, 1], z_fin / 2.)]
     print("response time of activator cascade: " + str(t_mid - t_change))
