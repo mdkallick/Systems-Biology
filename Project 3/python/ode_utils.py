@@ -6,14 +6,16 @@ import math
 """
 Where the input is an array big enough for every timestep, which also can change at
 every timestep.
-
-TODO: add error checking to make sure that inputs is the right size (given t0, dt, and tf)
 """
 
 
 def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
+    t = np.arange(t0, tf + (dt * 2), dt)    
+    
     if (inputs is not None):
         inputs = np.array([inputs])
+        if(inputs.shape[0] != t.shape[0]):
+            raise Exception("Size of input matrix does not match the number of time steps
         params = np.array([params])
         params = np.repeat(params, inputs.shape[1], axis=0).T
         params = np.concatenate([params, inputs], axis=0)
@@ -22,7 +24,7 @@ def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
     if (inputs is None):
         r = set_ode15s(function, yinit, t0, params)
 
-    t = np.arange(t0, tf + (dt * 2), dt)
+
 
     sol = np.zeros((t.shape[0], len(yinit)))
     sol[0] = yinit
