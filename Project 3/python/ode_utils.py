@@ -15,7 +15,7 @@ def ode15s(function, yinit, t0, dt, tf, params, inputs=None):
     if (inputs is not None):
         inputs = np.array([inputs])
         if(inputs.shape[0] != t.shape[0]):
-            raise Exception("Size of input matrix does not match the number of time steps
+            raise Exception("Size of input matrix does not match the number of time steps")
         params = np.array([params])
         params = np.repeat(params, inputs.shape[1], axis=0).T
         params = np.concatenate([params, inputs], axis=0)
