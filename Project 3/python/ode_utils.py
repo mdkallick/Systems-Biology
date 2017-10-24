@@ -53,6 +53,11 @@ def ode_func(function, yinit, t0, dt, tf, params, method, inputs=None):
         params = np.array([params])
         params = np.repeat(params, inputs.shape[1], axis=0).T
         params = np.concatenate([params, inputs], axis=0)
+        
+    if (method == 'forward_euler'):
+        stepfunc = forward_euler
+    elif (method == 'explicit_trapezoid'):
+        stepfunc = explicit_trapezoid
 
     t = np.arange(t0, tf + (dt), dt)
 
@@ -66,10 +71,8 @@ def ode_func(function, yinit, t0, dt, tf, params, method, inputs=None):
         elif (inputs is not None):
             p = params[i+1]
 
-        if (method == 'forward_euler'):
-            sol[i+1] = forward_euler(function, t, dt, sol[i], p)
-        elif (method == 'explicit_trapezoid'):
-            sol[i+1] = explicit_trapezoid(function, t, dt, sol[i], p)
+        sol[i+1] = stepfunc(function, t, dt, sol[i], p)
+        
     return t, sol
 
 def forward_euler(function, t, dt, prev, params):
