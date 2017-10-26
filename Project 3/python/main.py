@@ -20,14 +20,17 @@ Y0 = 1
 yinit = [X0, Y0]
 
 t0 = 0
-dt = 2
+dts = np.arange(0.01, 0.09, 0.01)    
 tf = 10
+for dt in dts:
+  t_fe, sol_fe = ode_func(n_degrade, yinit, t0, dt, tf, params, 'forward_euler')
+  t_et, sol_et = ode_func(n_degrade, yinit, t0, dt, tf, params, 'explicit_trapezoid')
 
-t_fe, sol_fe = ode_func(n_degrade, yinit, t0, dt, tf, params, 'forward_euler')
-t_et, sol_et = ode_func(n_degrade, yinit, t0, dt, tf, params, 'explicit_trapezoid')
+  # considered "correct", so very small dt
+  t, sol = ode15s(n_degrade, yinit, t0, .001, tf, params)
 
-# considered "correct", so very small dt
-t, sol = ode15s(n_degrade, yinit, t0, .001, tf, params)
+  d = np.abs(sol-sol_fe)
+  avg_err = mean(d)
 
 f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
 ax1.plot(t_fe, sol_fe[:, 0], 'g', label='X')
