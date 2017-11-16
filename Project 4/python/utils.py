@@ -79,3 +79,28 @@ def generate_child(cost_func, P, lb, ub, mutation):
         if(math.isfinite(cost)):
             return params, cost
     return params, cost
+
+# N is the number of parameter sets returned
+# t is the number of parameter sets in each tournament
+def tournament_select(P, Pcost, t, N):
+    G = np.zeros([N,P.shape[1]])
+    Gcost = np.zeros([N,1])
+    for i in range(N):
+        idx = np.random.choice(P.shape[0],t) # randomly select some indices
+        tourney_P = P[idx,:]
+        tourney_cost = Pcost[idx,:]
+        tourney_winner = np.argmin(tourney_cost)
+        G[i] = tourney_P[tourney_winner]
+        Gcost[i] = tourney_cost[tourney_winner]
+    return G, Gcost
+
+# T is the truncation threshold (T in [0,1])
+def truncation_select(P, Pcost, T):
+    T = int(T*P.shape[0])
+    idx = np.argsort(Pcost[:,0])
+    G = P[idx][0:T]
+    Gcost = Pcost[idx][0:T]
+    idx = np.random.choice(G.shape[0],P.shape[0]) # randomly select some indices
+    G = G[idx]
+    Gcost = Gcost[idx]
+    return G, Gcost
