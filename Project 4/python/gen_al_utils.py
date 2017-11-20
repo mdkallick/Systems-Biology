@@ -63,8 +63,8 @@ def ES(cost_func, selection_func, lb, ub, num_parents,
             G = G[idx]
             all_params[g+1,:,:] = G
             all_costs[g+1] = Gcost[0]
-            Pcost = Gcost[:,0:mu]
-            P = G[:,0:mu]
+            Pcost = Gcost[0:mu, :]
+            P = G[0:mu, :]
             # print("Pcost: ", Pcost)
         if(num_elites > 0):
             P = np.concatenate([P, elites], axis=0)
@@ -88,7 +88,7 @@ def generate_parent(cost_func, lb, ub):
 def generate_child(cost_func, P, lb, ub, mutation):
     params = np.zeros(len(lb))
     cost = math.inf
-    num_parents = len(P[0])
+    # num_parents = len(P[0])
     for i in range(1000):
         P1 = random.choice(P)
         P2 = random.choice(P)
@@ -107,7 +107,7 @@ def generate_child(cost_func, P, lb, ub, mutation):
                                 , mutation)
                                     , params)
         params = np.maximum(params,lb)
-        params = np.minimum (params,ub)
+        params = np.minimum(params,ub)
         cost = cost_func(params)
         if(math.isfinite(cost)):
             return params, cost

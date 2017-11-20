@@ -8,10 +8,13 @@ def get_period(x,y):
     jump = top[0][np.where(np.diff(top)[0]>1)]
     return np.mean(np.diff(y[jump]))
 
-def get_amp(x,y):
+def get_amp_old(x,y):
     top = np.where(np.diff(x)>0)
     jump = np.where(np.diff(top)[0]>1)
     return abs(np.mean(x[top[0][jump]])-np.mean(x[top[0][np.add(jump,1)]]))
+
+def get_amps(x,y):
+    return (np.amax(x,axis=0) - np.amin(x,axis=0))
 
 ### TAKEN FROM: https://stackoverflow.com/a/15860757
 # update_progress() : Displays or updates a console progress bar
