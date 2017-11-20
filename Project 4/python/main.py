@@ -15,7 +15,7 @@ num_children = 500
 num_generations = 5
 mutation = .05
 
-selection_type = 'linear_rank_select'
+selection_type = 'evolutionary_strategy'
 
 # P, Pcost = ES(goldbeter_fly_cost_function, selection_type, lb, ub,
 #                         num_parents, num_children, num_generations, mutation,

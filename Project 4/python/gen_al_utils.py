@@ -55,6 +55,17 @@ def ES(cost_func, selection_func, lb, ub, num_parents,
         elif(selection_func == 'linear_rank_select'):
             P, Pcost = linear_rank_select(G, Gcost, eta_minus,
                                                 num_parents - num_elites)
+        elif(selection_func == 'evolutionary_strategy'):
+            # assign parents for next generation
+            # to do this, I must first sort the children of this generation
+            idx = np.argsort(Gcost[:,0])
+            Gcost = Gcost[idx]
+            G = G[idx]
+            all_params[g+1,:,:] = G
+            all_costs[g+1] = Gcost[0]
+            Pcost = Gcost[:,0:mu]
+            P = G[:,0:mu]
+            # print("Pcost: ", Pcost)
         if(num_elites > 0):
             P = np.concatenate([P, elites], axis=0)
             Pcost = np.concatenate([Pcost, elitescost],axis=0)
