@@ -1,6 +1,7 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
-from gen_al_utils import ES
+from gen_al_utils import ES, GA
 from cost import simple_island_cost_function
 from cost import goldbeter_fly_cost_function
 from ode_utils import ode15s
@@ -12,29 +13,48 @@ lb = [0] * 18
 ub = [10] * 18
 num_parents = 40
 num_children = 40
-num_generations = 5
+num_generations = 8
 mutation = .05
 
-selection_type = 'tournament_select'
+run_type = 'calc'
+selection_type = 'truncation_select'
 
-P, Pcost = ES(goldbeter_fly_cost_function, selection_type, lb, ub,
-                        num_parents, num_children, num_generations, mutation,
-                        num_elites=1,
-                        tourney_size=4,
-                        truncation_thres=.5,
-                        eta_minus=.1)
+run_name = input("enter the run name: ")
 
-params = P[np.argmin(Pcost)]
+if not os.path.exists(run_name):
+    os.makedirs(run_name)
 
-# P, Pcost = ES(simple_island_cost_function, selection_type, lb, ub,
-#                         num_parents, num_children, num_generations, mutation,
-#                         num_elites=0,
-#                         tourney_size=4,
-#                         truncation_thres=.5,
-#                         eta_minus=.1)
+if(run_type == 'calc'):
+    if(selection_type == 'evolutionary_strategy'):
+        P, Pcost = ES(goldbeter_fly_cost_function, lb, ub, num_parents,
+                                    num_children, num_generations, mutation,
+                                    run_name=run_name)
+    else:
+        P, Pcost = GA(goldbeter_fly_cost_function, selection_type, lb, ub,
+                            num_parents, num_children, num_generations, mutation,
+                            num_elites=1,
+                            tourney_size=4,
+                            truncation_thres=.5,
+                            eta_minus=.1,
+                            run_name=run_name)
 
-# print("P: ", P)
-# print("Pcost: ", Pcost)
+    params = P[np.argmin(Pcost)]
+    np.savetxt(run_name + '/params.csv', params)
+
+elif(run_type == 'test'):
+    if(selection_type == 'evolutionary_strategy'):
+        P, Pcost = ES(goldbeter_fly_cost_function, lb, ub, num_parents,
+                                    num_children, num_generations, mutation)
+    else:
+        P, Pcost = GA(simple_island_cost_function, selection_type, lb, ub,
+                            num_parents, num_children, num_generations, mutation,
+                            num_elites=0,
+                            tourney_size=4,
+                            truncation_thres=.5,
+                            eta_minus=.1)
+
+    print("P: ", P)
+    print("Pcost: ", Pcost)
 
 #
 # tourney_size = 4
@@ -79,35 +99,36 @@ params = P[np.argmin(Pcost)]
 #           small_k1, small_k2, ks]
 #
 # initial conditions
-M = .5
-P0 = 1
-P1 = .4
-P2 = .4
-PN = .4
+if(run_type == 'calc'):
+    M = .5
+    P0 = 1
+    P1 = .4
+    P2 = .4
+    PN = .4
 
-yinit = [M, P0, P1, P2, PN]
+    yinit = [M, P0, P1, P2, PN]
 
-t0 = 0
-tf = 800
-dt = .1
+    t0 = 0
+    tf = 800
+    dt = .1
 
-t, sol = ode15s(goldbeter_fly, yinit, t0, dt, tf, params)
+    t, sol = ode15s(goldbeter_fly, yinit, t0, dt, tf, params)
 
-j = 2
+    j = 2
 
-print(get_period(np.sum(sol[:-j, 1:4], axis=1),t[:-j]))
-print(get_amps(sol[:-j],t[:-j]))
+    print(get_period(np.sum(sol[:-j, 1:4], axis=1),t[:-j]))
+    print(get_amps(sol[:-j],t[:-j]))
 
-plt.plot(t[:-j], sol[:-j, 0], 'b', label='M')
-plt.plot(t[:-j], sol[:-j, 1], 'g', label='P0')
-plt.plot(t[:-j], sol[:-j, 2], 'm', label='P1')
-plt.plot(t[:-j], sol[:-j, 3], 'r', label='P2')
-plt.plot(t[:-j], sol[:-j, 4], 'k', label='PN')
-plt.plot(t[:-j], np.sum(sol[:-j, 1:4], axis=1), 'c', label='PT')
-plt.legend(loc='best')
-plt.xlabel('time / h')
-plt.ylabel('PER forms or M')
-plt.ylim(ymin=0, ymax=5.5)
-plt.title('Oscillations in PER over Time')
-plt.grid()
-plt.show()
+    plt.plot(t[:-j], sol[:-j, 0], 'b', label='M')
+    plt.plot(t[:-j], sol[:-j, 1], 'g', label='P0')
+    plt.plot(t[:-j], sol[:-j, 2], 'm', label='P1')
+    plt.plot(t[:-j], sol[:-j, 3], 'r', label='P2')
+    plt.plot(t[:-j], sol[:-j, 4], 'k', label='PN')
+    plt.plot(t[:-j], np.sum(sol[:-j, 1:4], axis=1), 'c', label='PT')
+    plt.legend(loc='best')
+    plt.xlabel('time / h')
+    plt.ylabel('PER forms or M')
+    plt.ylim(ymin=0, ymax=5.5)
+    plt.title('Oscillations in PER over Time')
+    plt.grid()
+    plt.show()
