@@ -10,14 +10,14 @@ from utils import get_period
 from utils import get_amps
 
 lb = [0] * 18
-ub = [10] * 18
-num_parents = 40
+ub = [50] * 18
+num_parents = 8
 num_children = 40
 num_generations = 8
 mutation = .05
 
 run_type = 'calc'
-selection_type = 'truncation_select'
+selection_type = 'evolutionary_strategy'
 
 run_name = input("enter the run name: ")
 
