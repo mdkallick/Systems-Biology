@@ -106,7 +106,19 @@
 	 	\label{fig:ts1}
 	 \end{figure}
  
- 
+ 	To conclude, we will look at an interesting observation that Goldbeter made, which is that when you increase the PER degradation rate ($v_d$), you also increase the maximum amount of PER in the system (i.e. the top of the oscillation). Using a different parameter set I tested this observation, and as can be seen in Figure \ref{fig:vds} and Figure \ref{fig:vds2}, this holds true for multiple parameter sets. I found that increasing the PER degradation rate also increases maximum total PER for two distinct parameter sets that are also distinct from Goldbeter's model. \\
 	
+	
+	\begin{figure}[!htbp]
+	 	\includegraphics[width=\linewidth]{{"../plots/vds"}.png}
+	 	\caption{Simulations of the Goldbeter fly model using found parameters, with varying values for the parameter $v_d$. This provides support for Goldbeters's claim that increasing $v_d$ also increases maximum total PER. The initial parameters were found with an evolutionary strategy.}
+	 	\label{fig:vds}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/vds2"}.png}
+		\caption{Simulations of the Goldbeter fly model using found parameters, with varying values for the parameter $v_d$. This provides support for Goldbeters's claim that increasing $v_d$ also increases maximum total PER. Notice that some of these values of $v_d$ barely provide good oscillation, but it is still distinctly noticeable that PER levels change. The initial parameters were found with linear ranking selection.}
+		\label{fig:vds2}
+	\end{figure}
 	
 \end{document}
