@@ -8,11 +8,13 @@ def get_period(x,y):
     jump = top[0][np.where(np.diff(top)[0]>1)]
     return np.mean(np.diff(y[jump]))
 
+# Note that this uses x for the amplitude parameter but actually means y (and is called that way in cost)
 def get_amp_old(x,y):
     top = np.where(np.diff(x)>0)
     jump = np.where(np.diff(top)[0]>1)
     return abs(np.mean(x[top[0][jump]])-np.mean(x[top[0][np.add(jump,1)]]))
 
+# Note that this uses x for the amplitude parameter but actually means y (and is called that way in cost)
 def get_amps(x,y):
     return (np.amax(x,axis=0) - np.amin(x,axis=0))
 
