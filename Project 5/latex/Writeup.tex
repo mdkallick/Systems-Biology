@@ -25,6 +25,11 @@
 	
 	We also performed this analysis for varying percentages of perturbation, which can be seen in Figures \ref{fig:per2}, \ref{fig:per5}, and \ref{fig:per10} for period, and Figures \ref{fig:amp2}, \ref{fig:amp5}, and \ref{fig:amp10} for amplitude. However, we noted little actual change in the sensitivities (excluding a few outliers in the amplitude data which become so large that the rest of the data is hard to read - however, those outliers are also outliers in the $1\%$ amplitude data, they are simpler closer to the rest of the data).
 	
+	\subsection{Extensions}
+	Firstly, I examined multiple different percentages to perturb the parameters by. I admit that my findings for that were really not very interesting. \\ \\
+	
+	Second, I analyzed the Goldbeter Fly model - you can see the results I found in Figure \ref{fig:gf_per} (for period) and \ref{fig:gf_amp} (for amplitude). Because I didn't have enough time to generate more than 2 parameter sets (sorry, it takes about 2 hours to generate one with my current settings), the trends across parameter sets aren't so clear. It is clear that parameter set 1 is much less sensitive to change for amplitude compared to the parameter set 2. For period, both parameter sets actually stay very close for all of the parameters - excluding $v_d$.
+	
 	\begin{figure}[!htbp]
 		\includegraphics[width=\linewidth]{{"../plots/period_sens_1.0"}.png}
 		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $1\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
@@ -73,4 +78,16 @@
 		\label{fig:amp10}
 	\end{figure}
 	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/gf_period_sens_1.0"}.png}
+		\caption{Sensitivities of the parameters used for the Goldbeter fly model. These were found across $2$ parameter sets with a $1\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
+		\label{fig:gf_per}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/gf_amp_sens_1.0"}.png}
+		\caption{Sensitivities of the parameters used for the Goldbeter fly model. These were found across $2$ parameter sets with a $1\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
+		\label{fig:gf_amp}
+	\end{figure}
+
 \end{document}
