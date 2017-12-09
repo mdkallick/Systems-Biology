@@ -1,0 +1,76 @@
+\documentclass[]{article}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{listings}
+
+%opening
+\title{Systems Biology Project 5}
+\author{Mathias D. Kallick}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Sensitivity Analysis}
+	Sensitivity analysis for a model is designed to look at the importance of exact values in the parameter set used. Because we have no way of generating parameters for models from real-world data, it is important to look at the ways that parameters can affect a simulation. This is especially important because models can often have multiple parameter sets that produce good results - how do we choose the right one to use for our simulation? Furthermore, what distinguishes different parameter sets? One of the best ways to determine what the differences are in terms of simulated results is sensitivity analysis - it lets us look at what parameters can be perturbed without altering the results too much, while also seeing which parameters have a very specific value that, if changed, can affect the results in a major way. \\ \\
+	For this project, we are undertaking a comprehensive sensitivity analysis of the Gonze and Goodwin model, from Gonze's 2005 paper - "Spontaneous Synchronization of Coupled Circadian Oscillators". We will look at the sensitivity of all of the parameters individually, for a large number of good parameter sets.
+	
+	\subsection{Setup}
+	We wanted to perform sensitivity analysis on the Gonze-Goodwin model. In order to do this, we needed good parameter sets, so we chose to run a genetic algorithm for 10 generations, with 100 parents and 100 children, tournament selection, and a $.05$ mutation factor. Our lower bound for all of the parameters was zero, while our upper bound was $100$, for all of the parameters except $n$, which we found could not be set higher than $10$ due to overflow errors in Python. With these settings, we generated $10$ distinct parameter sets, which we used for our sensitivity analysis. We then, for each parameter in each of those sets, perturbed the parameter by a number of different percentages, ran the simulation, and found the sensitivity in the period and the amplitude, separately.
+	
+	\subsection{Results}
+	We found that most of the parameters were quite sensitive to perturbation for period across all of our parameter sets. In Figure \ref{fig:per1}, we see the sensitivities across all parameter sets for a $1\%$ perturbation. Notice that $v_1$, $k_3$, and $k_5$ are notably not sensitive, but the rest tend to be. For some of the parameters, the actual distribution of sensitivities between parameter sets is quite low (this is especially true for non-sensitive parameters), but for many the distribution of sensitivities is very wide. Some parameters, like $v_6$ or $K_4$, even have sensitivities both above and below the x-axis for different parameter sets. This is interesting, and it suggests to me that if you were to pick a parameter set, you might want one that is more robust across the board, like parameter set $1$, for example. In Figure \ref{fig:amp1}, we see the same plot but looking at the sensitivity of the amplitude to perturbation instead of the period. Interestingly, the sensitivities stay fairly consistent across period and amplitude measures. It is worth noting that the amplitude sensitivities are in the thousands while the period sensitivities are in the tens. I think this is mostly due to the fact that the cost function doesn't weigh amplitudes heavily, and so for our parameter sets it is very common for amplitudes to become very large with our genetic algorithm. \\ \\
+	
+	We also performed this analysis for varying percentages of perturbation, which can be seen in Figures \ref{fig:per2}, \ref{fig:per5}, and \ref{fig:per10} for period, and Figures \ref{fig:amp2}, \ref{fig:amp5}, and \ref{fig:amp10} for amplitude. However, we noted little actual change in the sensitivities (excluding a few outliers in the amplitude data which become so large that the rest of the data is hard to read - however, those outliers are also outliers in the $1\%$ amplitude data, they are simpler closer to the rest of the data).
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/period_sens_1.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $1\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
+		\label{fig:per1}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/amp_sens_1.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $1\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured amplitude to these perturbations.}
+		\label{fig:amp1}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/period_sens_2.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $2\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
+		\label{fig:per2}
+	\end{figure}
+
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/period_sens_5.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $5\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
+		\label{fig:per5}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/period_sens_10.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $10\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured period to these perturbations.}
+		\label{fig:per10}
+	\end{figure}
+		
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/amp_sens_2.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $2\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured amplitude to these perturbations.}
+		\label{fig:amp2}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/amp_sens_5.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $5\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured amplitude to these perturbations.}
+		\label{fig:amp5}
+	\end{figure}
+	
+	\begin{figure}[!htbp]
+		\includegraphics[width=\linewidth]{{"../plots/amp_sens_10.0"}.png}
+		\caption{Sensitivities of the parameters used for the Gonze-Goodwin model. These were found across $10$ parameter sets with a $10\%$ perturbation of the parameters. This figure looks specifically at the sensitivity of the measured amplitude to these perturbations.}
+		\label{fig:amp10}
+	\end{figure}
+	
+\end{document}

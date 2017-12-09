@@ -8,7 +8,6 @@ Where the input is an array big enough for every timestep, which also can change
 every timestep.
 """
 
-
 def ode15s(function, yinit, t0, dt, tf, params, inputs=None, rtol=1e-6, atol=1e-12):
     t = np.arange(t0, tf + (dt * 2), dt)
 

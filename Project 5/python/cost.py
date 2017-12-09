@@ -29,10 +29,11 @@ def goldbeter_fly_cost_function( params ):
     t0 = 0
     tf = 800
     dt = .1
+    RelTol = 1e-8
     with warnings.catch_warnings():
         warnings.filterwarnings('error')
         try:
-            t, sol = ode15s(goldbeter_fly, yinit, t0, dt, tf, params)
+            t, sol = ode15s(goldbeter_fly, yinit, t0, dt, tf, params, rtol=RelTol)
         except (ValueError, UserWarning) as e:
             cost = math.inf
             return cost

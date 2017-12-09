@@ -32,7 +32,7 @@ def goldbeter_fly(t, y, params):
 
     # dydt = [M, P0, P1, P2, PN]
 
-    dydt[0] = v_s*(hill(PN, K_I, n)) - v_m*(M/(K_m + M))
+    dydt[0] = v_s*(hill(K_I, PN, n)) - v_m*(M/(K_m + M))
     dydt[1] = k_s*M - V_1*(P0/(K_1 + P0)) + V_2*(P1/(K_2 + P1))
     dydt[2] =( V_1*(P0/(K_1 + P0))
              - V_2*(P1/(K_2 + P1))

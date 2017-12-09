@@ -128,6 +128,22 @@ def ES(cost_func, lb, ub, num_parents, num_children, num_generations, mutation,
     np.savetxt(run_name + '/best_costs.csv', best_costs)
     return P, Pcost
 
+def get_params(selection_type, cost_func,
+                lb, ub, num_parents, num_children,
+                num_generations, mutation):
+    if(selection_type == 'evolutionary_strategy'):
+        P, Pcost = ES(cost_func, lb, ub, num_parents,
+                                    num_children, num_generations, mutation)
+    else:
+        P, Pcost = GA(cost_func, selection_type, lb, ub,
+                            num_parents, num_children, num_generations, mutation,
+                            num_elites=1,
+                            tourney_size=4,
+                            truncation_thres=.5,
+                            eta_minus=.1)
+
+    params = P[np.argmin(Pcost)]
+    return params
 
 def generate_parent(cost_func, lb, ub):
     params = np.zeros(len(lb))
