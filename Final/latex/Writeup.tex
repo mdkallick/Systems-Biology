@@ -1,0 +1,84 @@
+\documentclass[]{article}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{listings}
+
+%opening
+\title{Systems Biology Final Project}
+\author{Mathias D. Kallick}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Kinetics and Motifs}
+	For this project, we are looking at the feedback loop model from Becker-Weimann's 2004 paper "Modeling Feedback Loops of the Mammalian Circadian Oscillator". This model is essentially designed to create oscillations from a single large positive feedback loop - there is also a smaller negative feedback loop inside of the larger one ($y3$ negatively affects $y1$, which positively affects $y2$, which positively affects $y3$, thus completing the loop). The primary type of kinetics used in this model is simply first-order mass action. Most of the equations for the variable are various forms of activation by other variables, combined with various forms of degradation of the variable itself. The two notable exceptions are $y_1$ and $y_4$, the concentration of \textit{Per2} or \textit{Cry} mRNA, and the concentration of \textit{Bmal1} mRNA respectively. For $y_1$, we see what can be described as a AND NOT gate. In computational biology, we often describe certain mathematical constructs as gates, making an analogy to binary logic (although these gates are very much non-binary). An OR gate represents a situation where a variable might be activated by either one of two other variables - if either $X$ OR $Y$ are present, then the variable will be activated - the truth table for this can be see in Table \ref{tab:OR}. OR gates are often thought of as sum gates - you add the two variables together. The second common gate used is the AND gate - this represents the situation where we need both $X$ AND $Y$ to be present for the activation to occur. AND gates are often thought of as product gates - you multiply the two variables together. The truth table for AND gates can be seen in Table \ref{tab:AND}. In this case, the authors are using a gate very similar to an AND gate, but instead of having it necessary for both variables to be there, the first variable needs to be there and the second variable needs to not be there - this is what I describe as an AND NOT gate - the truth table for this can be seen in Table \ref{tab:AND NOT}. The equation they use for this is a Hill function with a Hill coefficient of $1$ - the equation is shown in Equation \ref{eq:y1}. The other interesting equation here is the one used for $y_4$ - This is a Hill function with a Hill coefficient $r$, which they use a relatively high value of $3$ for. This can be seen in Equation \ref{eq:y4}.
+
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			$X$ & & $Y$ & & result \\ \hline
+			T & $+$ & F & = & T \\ \hline
+			F & $+$ & T & = & T \\ \hline
+			F & $+$ & F & = & F \\ \hline
+			T & $+$ & T & = & T \\ \hline
+		\end{tabular}
+		\caption{Truth table for an OR gate.}
+		\label{tab:OR}
+	\end{table}
+
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			$X$ & & $Y$ & & result \\ \hline
+			T & $\cdot$ & F & = & F \\ \hline
+			F & $\cdot$ & T & = & F \\ \hline
+			F & $\cdot$ & F & = & F \\ \hline
+			T & $\cdot$ & T & = & T \\ \hline
+		\end{tabular}
+		\caption{Truth table for an AND gate.}
+		\label{tab:AND}
+	\end{table}
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			$X$ & & $Y$ & & result \\ \hline
+			T & $\cdot$ & F & = & T \\ \hline
+			F & $\cdot$ & T & = & F \\ \hline
+			F & $\cdot$ & F & = & F \\ \hline
+			T & $\cdot$ & T & = & F \\ \hline
+		\end{tabular}
+		\caption{Truth table for an AND gate.}
+		\label{tab:AND NOT}
+	\end{table}
+
+	\begin{equation}\label{eq:y1}
+		f(\textit{trans}_\textit{Per2/Cry}) = \frac{v_{1b} \cdot (y_7 + c)}{k_{1b} \cdot (1 + (\frac{y3}{k_{1i}})^p) + (y7 + c)}
+	\end{equation}
+
+	\begin{equation}\label{eq:y4}
+	f(\textit{trans}_\textit{Bmal1}) = \frac{v_{4b} \cdot y3^r}{k_{4b}^r + y3^r}
+	\end{equation}
+	
+	\section{Numerical Solvers}
+		\subsection{Simulating the Model}
+		In order to simulate this model, I coded up the ODE in both MatLab and Python - my main codebase is in Python, so it was important to have that code. However, I wanted to analyze the efficiency of various solvers for this model, and MatLab has a higher variety of available solvers than Python, so I also needed MatLab code for it. I was able to recreate Figure 3A from the paper (using Python), as can be seen in Figure \ref{fig:3A}.
+		
+		\begin{figure}[!htbp]
+			\includegraphics[width=\linewidth]{{"../plots/Figure_3A"}.png}
+			\caption{Recreation of Figure 3A from Becker-Weimann Paper. Recreated using ode15s in Python.}
+			\label{fig:3A}
+		\end{figure}
+		
+		\subsection{Timing Various Solvers}
+		For this project, we were tasked with looking at run-times of various computational ODE solvers - two stiff solvers and two non-stiff solvers (ode23, ode45, ode23s, ode15s). Stiffness is a property of ODEs that makes non-stiff solvers take much longer to solve them - essentially, they gain error very quickly, so non-stiff solvers need to take minuscule time-steps in order to get the error down to acceptable levels. Stiff solvers take a longer per time-step (they do more work so that error is kept down), but they can take longer time-steps because of that. A stiff equation will not take longer with a stiff solver, but it will take much longer with a non-stiff solver. We found, for a simulation over 1000 hours with $\textit{dt} = .01$, ode23 took  seconds, ode45 took  seconds, ode23s took  seconds, and ode15s took  seconds.
+
+	\section{Sensitivity Analysis}
+
+\end{document}
