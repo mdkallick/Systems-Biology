@@ -77,7 +77,38 @@
 		\end{figure}
 		
 		\subsection{Timing Various Solvers}
-		For this project, we were tasked with looking at run-times of various computational ODE solvers - two stiff solvers and two non-stiff solvers (ode23, ode45, ode23s, ode15s). Stiffness is a property of ODEs that makes non-stiff solvers take much longer to solve them - essentially, they gain error very quickly, so non-stiff solvers need to take minuscule time-steps in order to get the error down to acceptable levels. Stiff solvers take a longer per time-step (they do more work so that error is kept down), but they can take longer time-steps because of that. A stiff equation will not take longer with a stiff solver, but it will take much longer with a non-stiff solver. We found, for a simulation over 1000 hours with $\textit{dt} = .01$, ode23 took  seconds, ode45 took  seconds, ode23s took  seconds, and ode15s took  seconds.
+		For this project, we were tasked with looking at run-times of various computational ODE solvers - two stiff solvers and two non-stiff solvers (ode23, ode45, ode23s, ode15s). Stiffness is a property of ODEs that makes non-stiff solvers take much longer to solve them - essentially, they gain error very quickly, so non-stiff solvers need to take minuscule time-steps in order to get the error down to acceptable levels. Stiff solvers take a longer per time-step (they do more work so that error is kept down), but they can take longer time-steps because of that. A stiff equation will not take longer with a stiff solver, but it will take much longer with a non-stiff solver. We found, for a simulation over 10000 hours with $\textit{dt} = .01$, ode23 took $12.05$ seconds, ode45 took $10.55$ seconds, ode23s took $12.88$ seconds, and ode15s took $26.43$ seconds. For ode23 and ode45,.this is a bit strange, since ode23 is a lower order solver than ode45 - higher order solvers tend to take longer. However, the difference between $12.05$ and $10.55$ seconds is small enough that I could see this as operating system strangeness. Equally, the fact that ode23 and ode23s took essentially the same amount of time is a little strange - I did do a more in depth examination based on this (see Table \ref{tab:timing}) and found that ode23 and ode23s only take approximately the same amount of time for smaller time-steps. For $\textit{dt} = .1$, ode23 takes much less time. Equally, ode15s only takes longer than ode23s when $\textit{dt} = .01$, (this is also true for ode45 vs ode23) which suggests that higher order solvers can be faster for bigger time-steps, but take much longer with smaller time-steps. This might be due to the error restrictions on the system (Relative Tolerance = $ 1e-6 $, Absolute Tolerance = $ 1e-8 $). Since the stiff solvers take more time than the non-stiff solvers consistently (not always by much though), we can conclude that this system is not stiff.
+
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				MatLab Timing & ode23 & ode45 & ode23s & ode15s \\ \hline
+				hours$=1000$, timestep$=.1$ & $0.5657$s & $0.3491$s & $1.0390$s & $0.8864$s \\ \hline
+				hours$=10000$, timestep$=.1$ & $2.7256$s & $2.1562$s & $8.7303$s & $6.5089$s \\ \hline
+				hours$=1000$, timestep$=.01$ & $1.2880$s & $1.3271$s & $1.5278$s & $3.2722$s \\ \hline
+				hours$=10000$, timestep$=.01$ & $12.0546$s & $10.5547$s & $12.8800$s & $26.4383$s \\ \hline
+			\end{tabular}
+			\caption{}
+			\label{tab:timing}
+		\end{table}
+
+		\subsubsection{Python vs. MatLab}
+		Given that I needed to use MatLab for this part of the project, and Python for the rest of it, I decided to do a little speed-test between the two systems. I initially just wanted to see how efficient my code way (I assumed that the backends would be about the same). I ran my Python code under the same conditions as the MatLab code on the same computer right my MatLab test (see Table \ref{tab:pytiming}). As you can see, these times are all substantially faster than MatLab was able to run the same model with ode15s. Not only does this make me pretty proud of my frontend code, but it also speaks to the efficiency of SciPy. I did some research and I think this mostly comes from the fact that MatLab is coded in C, while SciPy has all of its integration code written in FORTRAN.
+
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{|c|c|}
+				\hline
+				Python Timing & ode15s \\ \hline
+				hours$=1000$, timestep$=.1$ & $0.1235$s  \\ \hline
+				hours$=10000$, timestep$=.1$ & $1.1968$s \\ \hline
+				hours$=1000$, timestep$=.01$ & $0.6846$s \\ \hline
+				hours$=10000$, timestep$=.01$ & $6.4685$s \\ \hline
+			\end{tabular}
+			\caption{}
+			\label{tab:pytiming}
+		\end{table}
 
 	\section{Sensitivity Analysis}
 

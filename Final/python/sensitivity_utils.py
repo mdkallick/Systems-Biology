@@ -24,6 +24,23 @@ def period_sensitivity_becker( ode_func, params, j, percent,
 
     return (per_star-per)/percent
 
+#explore what different perturbations will do in param space in the becker_weimann ode
+def explore_param_space_becker( ode_func, params, j, y_init, t0, dt, tf):
+    params_cp = copy.copy(params)
+    pers = []
+    values = []
+    for percent in np.arange(-.5, .5, .001):
+        params_cp[j] = (1+percent)*params[j]
+        values.append(params_cp[j])
+        t_star, sol_star = ode15s(ode_func, y_init, t0, dt, tf, params_cp)
+        mid = int(len(t_star)/2)
+        per = get_period(t_star[mid:], np.add(np.add(sol_star[mid:,4],
+                                                  sol_star[mid:,5]),sol_star[mid:,6]))
+        pers.append(per)
+
+    return values, pers
+
+
 def period_sensitivity( ode_func, params, j, percent,
                         y_init, t0, dt, tf, mid=True):
     params_star = copy.copy(params)

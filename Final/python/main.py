@@ -5,6 +5,7 @@ from ode_utils import ode15s
 from odes import becker_weimann
 from utils import update_progress
 from sensitivity_utils import period_sensitivity_becker
+from sensitivity_utils import explore_param_space_becker
 import time
 
 """
@@ -43,38 +44,66 @@ k7d = .09
 params = [v1b, k1b, k1i, c, p, k1d, k2b, q, k2d, k2t, k3t, k3d, v4b, k4b,
             r, k4d, k5b, k5d, k5t, k6t, k6d, k6a, k7a, k7d]
 
+param_names = ['v1b', 'k1b', 'k1i', 'c', 'p', 'k1d', 'k2b', 'q', 'k2d', 'k2t',
+                'k3t', 'k3d', 'v4b', 'k4b', 'r', 'k4d', 'k5b', 'k5d', 'k5t',
+                'k6t', 'k6d', 'k6a', 'k7a', 'k7d']
+
 RelTol = 1e-6
 AbsTol = 1e-8
 
 """
-Sensitivity Analysis
+Perturbation Sensitivity Analysis
 """
 
-percent_perturb = .01
+# percent_perturb = .01
+# t0 = 0
+# dt = .1
+# tf = 200
+#
+# param_per_sensitivities = []
+# for j in range(len(params)):
+#     update_progress(j/(len(params)-1))
+#     per_sens = period_sensitivity_becker(becker_weimann, params, j, percent_perturb,
+#                                             yinit, t0, dt, tf)
+#     param_per_sensitivities.append(per_sens)
+#
+# period_sensitivities = [param_per_sensitivities]
+#
+# x = range(len(params))
+# i=1
+# for param_set_per_sens in period_sensitivities:
+#     plt.plot(x, param_set_per_sens, '.', label='Parameter Set ' + str(i))
+#     i+=1
+# plt.xticks(x, param_names, rotation=60)
+# plt.axhline(0, alpha=.3, color='black')
+# plt.grid(axis='x')
+# plt.xlabel('Parameter Name')
+# plt.ylabel('Sensitivity to ' + str(percent_perturb) + '% Perturbation')
+# plt.title('Parameter Sensitivity in the Becker-Weimann Model (Measuring Change in Period)')
+# plt.savefig('../plots/bw_period_sens_' + str(percent_perturb) + '.png', bbox_inches='tight')
+
+"""
+Param Space Sensitivity Analysis
+"""
+
 t0 = 0
 dt = .1
-tf = 200
+tf = 800
 
-param_per_sensitivities = []
 for j in range(len(params)):
-    update_progress(j/len(params))
-    per_sens = period_sensitivity_becker(becker_weimann, params, j, percent_perturb,
-                                            yinit, t0, dt, tf)
-    param_per_sensitivities.append(per_sens)
+    update_progress(j/(len(params)-1))
+    values, pers = explore_param_space_becker( becker_weimann, params, j, yinit, t0, dt, tf)
 
-period_sensitivities = [param_per_sensitivities]
+    plt.plot( values, pers )
+    plt.axhline(pers[int(len(pers)/2)], alpha=.3, color='black')
+    plt.xlabel(param_names[j])
+    plt.ylabel("Period (hours)")
+    plt.title("Period of Model over Set of Values for " +
+                    param_names[j] + " in Parameter Space")
 
-x = range(len(params))
-i=1
-for param_set_per_sens in period_sensitivities:
-    plt.plot(x, param_set_per_sens, '.', label='Parameter Set ' + str(i))
-    i+=1
-plt.axhline(0, alpha=.3, color='black')
-plt.xlabel('Parameter Name')
-plt.ylabel('Sensitivity to ' + str(percent_perturb) + '% Perturbation')
-plt.title('Parameter Sensitivity in the Goldbeter Fly Model (Measuring Change in Period)')
-plt.savefig('../plots/gf_period_sens_' + str(percent_perturb) + '.png', bbox_inches='tight')
-
+    plt.savefig('../plots/per_vals_extended_' + param_names[j] + '.png', bbox_inches='tight')
+    plt.close()
+    # plt.show()
 
 """
 Generate Fig. 3A
